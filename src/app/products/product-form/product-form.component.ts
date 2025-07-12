@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; 
 import { ActivatedRoute, Router } from '@angular/router'; 
 
-import { ProductoService } from '../product.service'; 
+import { ProductoService } from '../../services/product.service'; 
 import { ProductoRequest, ProductoResponse } from '../../models/product.models'; 
 
 @Component({
