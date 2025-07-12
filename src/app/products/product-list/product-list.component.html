@@ -1,1 +1,30 @@
-<h2>Product List</h2>
+<div class="product-list-container">
+  <h2>Listado de Productos</h2>
+
+  <button class="btn btn-add-product" [routerLink]="['/products/new']">Crear Nuevo Producto</button>
+
+  <div *ngIf="loading" class="loading-message">Cargando productos...</div>
+
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+
+  <div *ngIf="!loading && products.length === 0 && !error" class="no-products-message">
+    No hay productos disponibles.
+  </div>
+
+  <div *ngIf="!loading && products.length > 0" class="products-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <h3>{{ product.nombre }}</h3>
+      <p class="category">{{ product.categoria }}</p>
+      <p class="sku">SKU: {{ product.sku }}</p> <p class="description">{{ product.descripcion }}</p>
+      <p class="price">Precio: ${{ product.precio | number:'1.2-2' }}</p>
+      <p class="active" [class.inactive]="!product.activo">
+        Estado: {{ product.activo ? 'Activo' : 'Inactivo' }}
+      </p>
+      <div class="card-actions">
+        <button class="btn view-btn" [routerLink]="['/products', product.id]">Ver Detalles</button>
+        <button class="btn edit-btn" [routerLink]="['/products/edit', product.id]">Editar</button>
+        <button class="btn delete-btn" (click)="deleteProduct(product.id)">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

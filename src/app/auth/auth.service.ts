@@ -27,33 +27,36 @@ export class AuthService {
    * @param request Las credenciales del usuario.
    * @returns Un Observable con la respuesta de autenticación (JWT).
    */
- login(request: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.authUrl}/login`, request).pipe(
+ login(credentials: any): Observable<any> { // Usar 'any' temporalmente si no tienes los modelos
+    return this.http.post<any>(`${this.authUrl}/login`, credentials).pipe(
       tap(response => {
+        console.log('AuthService: Respuesta de login:', response); // <-- AÑADE ESTE LOG
         if (response && response.token) {
-          //console.log('AuthService: Intentando guardar JWT Token:', response.token); 
-          localStorage.setItem('jwt_token', response.token);
-          //console.log('AuthService: JWT Token guardado. Verificando en localStorage.getItem():', localStorage.getItem('jwt_token')); 
+          localStorage.setItem('token', response.token);
+          console.log('AuthService: Token guardado en localStorage:', response.token.substring(0, 30) + '...'); // Log parcial del token
         } else {
-          console.log('AuthService: La respuesta de login no contiene JWT o es nula.', response); 
+          console.log('AuthService: No se recibió token en la respuesta de login.');
         }
       })
     );
   }
+
 
   /**
    * Obtiene el token JWT del localStorage.
    * @returns El token JWT o null si no existe.
    */
   getToken(): string | null {
-    return localStorage.getItem('jwt_token');
+    const token = localStorage.getItem('token');
+    console.log('AuthService: getToken() llamado. Token obtenido:', token ? 'Sí' : 'No'); // Log para verificar si lo recupera
+    return token;
   }
 
   /**
    * Elimina el token JWT del localStorage y realiza el logout.
    */
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('token');
     console.log('Sesión cerrada y token eliminado.');
     
   }

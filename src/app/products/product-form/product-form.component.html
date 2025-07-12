@@ -1,0 +1,65 @@
+<div class="product-form-container">
+  <h2>{{ isEditMode ? 'Editar Producto' : 'Crear Nuevo Producto' }}</h2>
+
+  <div *ngIf="loading" class="loading-message">Cargando...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!loading || isEditMode">
+    <div class="form-group">
+      <label for="nombre">Nombre:</label>
+      <input id="nombre" type="text" formControlName="nombre" class="form-control" />
+      <div *ngIf="f['nombre'].invalid && (f['nombre'].dirty || f['nombre'].touched)" class="validation-error">
+        <div *ngIf="f['nombre'].errors?.['required']">El nombre es requerido.</div>
+        <div *ngIf="f['nombre'].errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripción:</label>
+      <textarea id="descripcion" formControlName="descripcion" class="form-control"></textarea>
+      <div *ngIf="f['descripcion'].invalid && (f['descripcion'].dirty || f['descripcion'].touched)" class="validation-error">
+        <div *ngIf="f['descripcion'].errors?.['required']">La descripción es requerida.</div>
+        <div *ngIf="f['descripcion'].errors?.['minlength']">La descripción debe tener al menos 10 caracteres.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="categoria">Categoría:</label>
+      <input id="categoria" type="text" formControlName="categoria" class="form-control" />
+      <div *ngIf="f['categoria'].invalid && (f['categoria'].dirty || f['categoria'].touched)" class="validation-error">
+        <div *ngIf="f['categoria'].errors?.['required']">La categoría es requerida.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="sku">SKU:</label>
+      <input id="sku" type="text" formControlName="sku" class="form-control" />
+      <div *ngIf="f['sku'].invalid && (f['sku'].dirty || f['sku'].touched)" class="validation-error">
+        <div *ngIf="f['sku'].errors?.['required']">El SKU es requerido.</div>
+        <div *ngIf="f['sku'].errors?.['minlength']">El SKU debe tener al menos 3 caracteres.</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="precio">Precio:</label>
+      <input id="precio" type="number" formControlName="precio" class="form-control" step="0.01" />
+      <div *ngIf="f['precio'].invalid && (f['precio'].dirty || f['precio'].touched)" class="validation-error">
+        <div *ngIf="f['precio'].errors?.['required']">El precio es requerido.</div>
+        <div *ngIf="f['precio'].errors?.['min']">El precio debe ser mayor que 0.</div>
+      </div>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <input id="activo" type="checkbox" formControlName="activo" />
+      <label for="activo">Activo</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="productForm.invalid || loading" class="btn btn-primary">
+        {{ isEditMode ? 'Actualizar' : 'Crear' }} Producto
+      </button>
+      <button type="button" (click)="onCancel()" class="btn btn-secondary">Cancelar</button>
+    </div>
+  </form>
+</div>
