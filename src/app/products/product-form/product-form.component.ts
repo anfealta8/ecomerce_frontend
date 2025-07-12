@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router'; 
 
 import { ProductoService } from '../../services/product.service'; 
-import { ProductoRequest, ProductoResponse } from '../../models/product.models'; 
+import { ProductoRequest, ProductoResponse } from '../../models/product.model'; 
 
 @Component({
   selector: 'app-product-form',

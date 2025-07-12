@@ -1,0 +1,60 @@
+<div class="order-form-container">
+  <h2>Crear Nueva Orden</h2>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <div *ngIf="isLoading" class="loading-message">Procesando orden...</div>
+
+  <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="usuarioId">Seleccionar Usuario:</label>
+      <select id="usuarioId" formControlName="usuarioId" class="form-control">
+        <option [value]="null" disabled>-- Seleccione un usuario --</option>
+        <option *ngFor="let user of users" [value]="user.id">{{ user.username }} (ID: {{ user.id }})</option>
+      </select>
+      <div *ngIf="f['usuarioId'].invalid && (f['usuarioId'].dirty || f['usuarioId'].touched)" class="validation-error">
+        El usuario es obligatorio.
+      </div>
+    </div>
+
+    <h3>Detalles de la Orden</h3>
+    <div formArrayName="detalles" class="order-details-section">
+      <div *ngFor="let detailGroup of detalles.controls; let i = index" [formGroupName]="i" class="order-detail-item">
+        <div class="form-group">
+          <label for="productoId_{{i}}">Producto:</label>
+          <select id="productoId_{{i}}" formControlName="productoId" class="form-control">
+            <option [value]="null" disabled>-- Seleccione un producto --</option>
+            <option *ngFor="let product of products" [value]="product.id">{{ product.nombre }} (${{ product.precio | number:'1.2-2' }})</option>
+          </select>
+          <div *ngIf="detalles.at(i)?.get('productoId')?.invalid && (detalles.at(i)?.get('productoId')?.dirty || detalles.at(i)?.get('productoId')?.touched)" class="validation-error">
+            El producto es obligatorio.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="cantidad_{{i}}">Cantidad:</label>
+          <input id="cantidad_{{i}}" type="number" formControlName="cantidad" class="form-control" min="1">
+          <div *ngIf="detalles.at(i)?.get('cantidad')?.invalid && (detalles.at(i)?.get('cantidad')?.dirty || detalles.at(i)?.get('cantidad')?.touched)" class="validation-error">
+            La cantidad es obligatoria y debe ser al menos 1.
+          </div>
+        </div>
+
+        <button type="button" (click)="removeOrderDetail(i)" class="btn btn-danger btn-sm remove-item-button">Eliminar</button>
+      </div>
+      <button type="button" (click)="addOrderDetail()" class="btn btn-secondary add-item-button">Añadir Otro Producto</button>
+      <div *ngIf="detalles.invalid && (detalles.dirty || detalles.touched)" class="validation-error">
+        <span *ngIf="detalles.errors?.['required'] && detalles.controls.length === 0">Debe añadir al menos un producto a la orden.</span>
+      </div>
+    </div>
+
+    <div class="form-group form-check">
+      <input type="checkbox" id="aplicarDescuentoAleatorio" formControlName="aplicarDescuentoAleatorio" class="form-check-input">
+      <label for="aplicarDescuentoAleatorio" class="form-check-label">Aplicar Descuento Aleatorio</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="orderForm.invalid || isLoading" class="btn btn-success">Crear Orden</button>
+      <button type="button" [routerLink]="['/orders']" class="btn btn-secondary">Cancelar</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,59 @@
+<div class="inventory-form-container">
+  <h2>{{ isEditMode ? 'Editar Registro de Inventario' : 'Crear Nuevo Registro de Inventario' }}</h2>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <div *ngIf="isLoading" class="loading-message">Procesando inventario...</div>
+
+  <form [formGroup]="inventoryForm" (ngSubmit)="onSubmit()">
+    <!-- Selector de Producto (deshabilitado en edición si no se permite cambiar) -->
+    <div class="form-group">
+      <label for="productoId">Producto:</label>
+      <select id="productoId" formControlName="productoId" class="form-control" [disabled]="isEditMode">
+        <option [value]="null" disabled>-- Seleccione un producto --</option>
+        <option *ngFor="let product of products" [value]="product.id">
+          {{ product.nombre }} (SKU: {{ product.sku }})
+        </option>
+      </select>
+      <div *ngIf="f['productoId'].invalid && (f['productoId'].dirty || f['productoId'].touched)" class="validation-error">
+        El producto es obligatorio.
+      </div>
+    </div>
+
+    <!-- Campos de Cantidades -->
+    <div class="form-group">
+      <label for="cantidadDisponible">Cantidad Disponible:</label>
+      <input id="cantidadDisponible" type="number" formControlName="cantidadDisponible" class="form-control" min="0">
+      <div *ngIf="f['cantidadDisponible'].invalid && (f['cantidadDisponible'].dirty || f['cantidadDisponible'].touched)" class="validation-error">
+        <span *ngIf="f['cantidadDisponible'].errors?.['required']">La cantidad disponible es obligatoria.</span>
+        <span *ngIf="f['cantidadDisponible'].errors?.['min']">La cantidad disponible no puede ser negativa.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cantidadReservada">Cantidad Reservada:</label>
+      <input id="cantidadReservada" type="number" formControlName="cantidadReservada" class="form-control" min="0">
+      <div *ngIf="f['cantidadReservada'].invalid && (f['cantidadReservada'].dirty || f['cantidadReservada'].touched)" class="validation-error">
+        <span *ngIf="f['cantidadReservada'].errors?.['required']">La cantidad reservada es obligatoria.</span>
+        <span *ngIf="f['cantidadReservada'].errors?.['min']">La cantidad reservada no puede ser negativa.</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="cantidadMinima">Cantidad Mínima:</label>
+      <input id="cantidadMinima" type="number" formControlName="cantidadMinima" class="form-control" min="0">
+      <div *ngIf="f['cantidadMinima'].invalid && (f['cantidadMinima'].dirty || f['cantidadMinima'].touched)" class="validation-error">
+        <span *ngIf="f['cantidadMinima'].errors?.['required']">La cantidad mínima es obligatoria.</span>
+        <span *ngIf="f['cantidadMinima'].errors?.['min']">La cantidad mínima no puede ser negativa.</span>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="inventoryForm.invalid || isLoading" class="btn btn-success">
+        {{ isEditMode ? 'Actualizar Inventario' : 'Crear Inventario' }}
+      </button>
+      <button type="button" [routerLink]="['/inventories']" class="btn btn-secondary">Cancelar</button>
+    </div>
+  </form>
+</div>

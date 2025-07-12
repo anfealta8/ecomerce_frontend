@@ -1,0 +1,58 @@
+<div class="order-list-container">
+  <h2>Listado de Órdenes</h2>
+
+  <button [routerLink]="['/orders/new']" class="btn btn-primary create-button" *ngIf="authService.isAdmin()">Crear Nueva Orden (Admin)</button>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando órdenes...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && orders.length === 0 && !errorMessage" class="no-data-message">
+    No hay órdenes registradas.
+  </div>
+
+  <div *ngIf="orders.length > 0" class="order-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID Orden</th>
+          <th>Usuario</th>
+          <th>Fecha Creación</th>
+          <th>Estado</th>
+          <th>Subtotal</th>
+          <th>Descuento</th>
+          <th>Total</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.id }}</td>
+          <td>{{ order.nombreUsuario }} (ID: {{ order.usuarioId }})</td>
+          <td>{{ order.fechaCreacion | date:'short' }}</td>
+          <td>{{ order.estado }}</td>
+          <td>${{ order.subtotal | number:'1.2-2' }}</td>
+          <td>${{ order.descuentoTotal | number:'1.2-2' }}</td>
+          <td>${{ order.total | number:'1.2-2' }}</td>
+          <td class="order-actions-cell">
+            <button (click)="viewOrderDetails(order.id)" class="btn btn-info btn-sm">Ver Detalles</button>
+            <button (click)="initiateDelete(order.id)" class="btn btn-danger btn-sm" *ngIf="authService.isAdmin()">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Confirmación de Eliminación (reutiliza los estilos) -->
+  <div *ngIf="showConfirmModal" class="confirmation-modal-overlay">
+    <div class="confirmation-modal-content">
+      <h3>Confirmar Eliminación</h3>
+      <p>¿Estás seguro de que quieres eliminar la orden con ID <strong>"{{ orderToDeleteId }}"</strong>?</p>
+      <p>Esta acción es irreversible.</p>
+      <div class="modal-actions">
+        <button (click)="confirmDeleteOrder()" class="btn btn-danger">Sí, Eliminar</button>
+        <button (click)="cancelDelete()" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,6 +6,12 @@ import { ProductListComponent } from './products/product-list/product-list.compo
 import { ProductFormComponent } from './products/product-form/product-form.component';
 import { UserListComponent } from './users/user-list/user-list.component';
 import { UserFormComponent } from './users/user-form/user-form.component';
+import { OrderListComponent } from './order/order-list/order-list.component'; 
+import { OrderDetailComponent } from './order/order-detail/order-detail.component'; 
+import { OrderFormComponent } from './order/order-form/order-form.component'; 
+import { InventoryListComponent } from './inventory/inventory-list/inventory-list.component'; // ¡NUEVO!
+import { InventoryFormComponent } from './inventory/inventory-form/inventory-form.component'; // ¡NUEVO!
+
 
 import { AuthGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard'; // Necesitarás crear este guard
@@ -22,7 +28,17 @@ export const routes: Routes = [
 
   { path: 'users', component: UserListComponent, canActivate: [AuthGuard, AdminGuard] }, 
   { path: 'users/new', component: UserFormComponent, canActivate: [AuthGuard, AdminGuard] }, 
-  { path: 'users/edit/:id', component: UserFormComponent, canActivate: [AuthGuard, AdminGuard] }, 
+  { path: 'users/edit/:id', component: UserFormComponent, canActivate: [AuthGuard, AdminGuard] },
+
+  { path: 'orders', component: OrderListComponent, canActivate: [AuthGuard, AdminGuard] }, 
+  { path: 'orders/details/:id', component: OrderDetailComponent, canActivate: [AuthGuard] }, 
+  { path: 'orders/new', component: OrderFormComponent, canActivate: [AuthGuard] }, 
+  
+
+  { path: 'inventories', component: InventoryListComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'inventories/new', component: InventoryFormComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'inventories/edit/:id', component: InventoryFormComponent, canActivate: [AuthGuard, AdminGuard] },
+
 
   { path: '**', redirectTo: '/home' }
 ];

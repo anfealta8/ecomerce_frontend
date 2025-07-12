@@ -1,0 +1,58 @@
+<div class="inventory-list-container">
+  <h2>Gestión de Inventario</h2>
+
+  <button [routerLink]="['/inventories/new']" class="btn btn-primary create-button" *ngIf="authService.isAdmin()">Crear Nuevo Registro de Inventario</button>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando inventarios...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && inventories.length === 0 && !errorMessage" class="no-data-message">
+    No hay registros de inventario.
+  </div>
+
+  <div *ngIf="inventories.length > 0" class="inventory-table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Producto (ID)</th>
+          <th>SKU</th>
+          <th>Disp.</th>
+          <th>Res.</th>
+          <th>Min.</th>
+          <th>Fecha Creación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inventory of inventories">
+          <td>{{ inventory.id }}</td>
+          <td>{{ inventory.nombreProducto }} ({{ inventory.productoId }})</td>
+          <td>{{ inventory.skuProducto }}</td>
+          <td>{{ inventory.cantidadDisponible }}</td>
+          <td>{{ inventory.cantidadReservada }}</td>
+          <td>{{ inventory.cantidadMinima }}</td>
+          <td>{{ inventory.fechaCreacion | date:'short' }}</td>
+          <td class="inventory-actions-cell">
+            <button (click)="editInventory(inventory.id)" class="btn btn-secondary btn-sm" *ngIf="authService.isAdmin()">Editar</button>
+            <button (click)="initiateDelete(inventory)" class="btn btn-danger btn-sm" *ngIf="authService.isAdmin()">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Confirmación de Eliminación (reutiliza los estilos) -->
+  <div *ngIf="showConfirmModal" class="confirmation-modal-overlay">
+    <div class="confirmation-modal-content">
+      <h3>Confirmar Eliminación</h3>
+      <p>¿Estás seguro de que quieres eliminar el registro de inventario para <strong>"{{ inventoryToDeleteProductName }}"</strong> (ID: {{ inventoryToDeleteId }})?</p>
+      <p>Esta acción es irreversible.</p>
+      <div class="modal-actions">
+        <button (click)="confirmDeleteInventory()" class="btn btn-danger">Sí, Eliminar</button>
+        <button (click)="cancelDelete()" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

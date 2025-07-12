@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'; // Para *ngIf, *ngFor, date pipe
 import { RouterLink, Router } from '@angular/router'; // Para routerLink y navegación programática
 
 import { ProductoService } from '../../services/product.service'; // Asegúrate de que esta ruta sea correcta
-import { ProductoResponse } from '../../models/product.models'; // Asegúrate de que esta ruta sea correcta
+import { ProductoResponse } from '../../models/product.model'; // Asegúrate de que esta ruta sea correcta
 import { AuthService } from '../../auth/auth.service'; // Asegúrate de que esta ruta sea correcta
 
 @Component({
