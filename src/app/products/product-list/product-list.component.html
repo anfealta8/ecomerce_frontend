@@ -1,0 +1,44 @@
+<div class="product-list-container">
+  <h2>Listado de Productos</h2>
+
+  <button [routerLink]="['/products/new']" class="btn btn-primary create-button" *ngIf="authService.isAdmin()">Crear Nuevo Producto</button>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando productos...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && products.length === 0 && !errorMessage" class="no-data-message">
+    No hay productos registrados.
+  </div>
+
+  <div *ngIf="products.length > 0" class="product-cards-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <h3>{{ product.nombre }}</h3>
+      <p><strong>Categoría:</strong> {{ product.categoria }}</p>
+      <p><strong>SKU:</strong> {{ product.sku }}</p>
+      <p><strong>Descripción:</strong> {{ product.descripcion }}</p>
+      <p><strong>Precio:</strong> ${{ product.precio | number:'1.2-2' }}</p>
+      <!-- CORRECCIÓN AQUÍ: Usar product.activo y convertir a texto legible -->
+      <p><strong>Estado:</strong> {{ product.activo ? 'Activo' : 'Inactivo' }}</p>
+
+      <div class="product-actions">
+        <button (click)="viewProductDetails(product.id!)" class="btn btn-info">Ver Detalles</button>
+        <button (click)="editProduct(product.id!)" class="btn btn-secondary edit-button" *ngIf="authService.isAdmin()">Editar</button>
+        <button (click)="initiateDelete(product)" class="btn btn-danger delete-button" *ngIf="authService.isAdmin()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación de Eliminación -->
+  <div *ngIf="showConfirmModal" class="confirmation-modal-overlay">
+    <div class="confirmation-modal-content">
+      <h3>Confirmar Eliminación</h3>
+      <p>¿Estás seguro de que quieres eliminar el producto <strong>"{{ productToDeleteName }}"</strong>?</p>
+      <p>Esta acción es irreversible.</p>
+      <div class="modal-actions">
+        <button (click)="confirmDeleteProduct()" class="btn btn-danger">Sí, Eliminar</button>
+        <button (click)="cancelDelete()" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

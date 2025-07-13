@@ -1,0 +1,64 @@
+<div class="order-detail-container">
+  <div *ngIf="isLoading" class="loading-message">Cargando detalles de la orden...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="order && !isLoading">
+    <h2>Detalles de la Orden #{{ order.id }}</h2>
+    <div class="order-summary">
+      <p><strong>Usuario:</strong> {{ order.nombreUsuario }} (ID: {{ order.usuarioId }})</p>
+      <p><strong>Fecha de Creación:</strong> {{ order.fechaCreacion | date:'medium' }}</p>
+      <p><strong>Última Actualización:</strong> {{ order.fechaActualizacion | date:'medium' }}</p>
+      <p><strong>Subtotal:</strong> ${{ order.subtotal | number:'1.2-2' }}</p>
+      <p><strong>Descuento Total:</strong> ${{ order.descuentoTotal | number:'1.2-2' }}</p>
+      <p><strong>Total Final:</strong> ${{ order.total | number:'1.2-2' }}</p>
+
+      <div class="order-status-section">
+        <p><strong>Estado Actual:</strong> <span class="status-badge status-{{ order.estado | lowercase }}">{{ order.estado }}</span></p>
+        <!-- Selector de estado visible solo para ADMIN -->
+        <div *ngIf="authService.isAdmin()" class="status-update-controls">
+          <label for="statusSelect">Cambiar Estado:</label>
+          <select id="statusSelect" [(ngModel)]="selectedStatus" class="form-select">
+            <option *ngFor="let status of availableStatuses" [value]="status">{{ status }}</option>
+          </select>
+          <button (click)="updateOrderStatus()" class="btn btn-primary update-status-button">Actualizar Estado</button>
+        </div>
+      </div>
+    </div>
+
+    <h3>Productos en la Orden:</h3>
+    <div *ngIf="order.detalles && order.detalles.length > 0" class="order-details-table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Producto</th>
+            <th>Nombre Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detail of order.detalles">
+            <td>{{ detail.productoId }}</td>
+            <td>{{ detail.nombreProducto }}</td>
+            <td>{{ detail.cantidad }}</td>
+            <td>${{ detail.precioUnitario | number:'1.2-2' }}</td>
+            <td>${{ detail.subtotal | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!order.detalles || order.detalles.length === 0" class="no-data-message">
+      Esta orden no tiene detalles de productos.
+    </div>
+
+    <div class="order-actions-bottom">
+      <button [routerLink]="['/orders']" class="btn btn-secondary">Volver al Listado de Órdenes</button>
+    </div>
+  </div>
+
+  <div *ngIf="!order && !isLoading && !errorMessage" class="no-data-message">
+    No se encontró la orden.
+  </div>
+</div>

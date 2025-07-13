@@ -1,0 +1,26 @@
+<header class="app-header">
+  <nav>
+    <ul class="nav-list">
+      <li><a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+      <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
+      <li *ngIf="authService.isAdmin()"><a routerLink="/users" routerLinkActive="active">Users</a></li>
+      <li *ngIf="authService.isAdmin()"><a routerLink="/orders" routerLinkActive="active">Orders</a></li>
+      <li *ngIf="authService.isAdmin()"><a routerLink="/inventories" routerLinkActive="active">Inventories</a></li>
+      <li><a routerLink="/search-products" routerLinkActive="active">Search Products</a></li>
+      <li><a routerLink="/top-sold" routerLinkActive="active">Top Sold</a></li>
+      <li><a routerLink="/active-products" routerLinkActive="active">Active Products</a></li>
+      <li *ngIf="authService.isAdmin()"><a routerLink="/frequent-customers" routerLinkActive="active">Frequent Customers</a></li>
+
+
+      <li class="auth-links">
+        <ng-container *ngIf="!authService.isLoggedIn()">
+          <a routerLink="/login" routerLinkActive="active">Login</a>
+          <a routerLink="/register" routerLinkActive="active">Register</a>
+        </ng-container>
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <button (click)="logout()" class="logout-button">Logout</button>
+        </ng-container>
+      </li>
+    </ul>
+  </nav>
+</header>

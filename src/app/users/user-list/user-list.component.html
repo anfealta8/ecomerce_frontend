@@ -1,0 +1,43 @@
+<div class="user-list-container">
+  <h2>Listado de Usuarios</h2>
+
+  <button [routerLink]="['/users/new']" class="btn btn-primary create-button">Crear Nuevo Usuario</button>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando usuarios...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && users.length === 0 && !errorMessage" class="no-data-message">
+    No hay usuarios registrados.
+  </div>
+
+  <div *ngIf="users.length > 0" class="user-cards-grid">
+    <div *ngFor="let user of users" class="user-card">
+      <h3>{{ user.username }}</h3>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p *ngIf="user.roles && user.roles.length > 0"><strong>Roles:</strong> {{ user.roles.join(', ') }}</p>
+      <p *ngIf="user.fechaCreacion"><strong>Creado:</strong> {{ user.fechaCreacion | date:'short' }}</p>
+      <p *ngIf="user.fechaActualizacion"><strong>Actualizado:</strong> {{ user.fechaActualizacion | date:'short' }}</p>
+
+      <div class="user-actions">
+        <!-- Solo permitir editar/eliminar si el usuario logueado es ADMIN -->
+        <button (click)="editUser(user.id!)" class="btn btn-secondary edit-button" *ngIf="authService.isAdmin()">Editar</button>
+        <!-- Cambiado para llamar a initiateDelete -->
+        <button (click)="initiateDelete(user)" class="btn btn-danger delete-button" *ngIf="authService.isAdmin()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación de Eliminación -->
+  <div *ngIf="showConfirmModal" class="confirmation-modal-overlay">
+    <div class="confirmation-modal-content">
+      <h3>Confirmar Eliminación</h3>
+      <p>¿Estás seguro de que quieres eliminar al usuario <strong>"{{ userToDeleteUsername }}"</strong>?</p>
+      <p>Esta acción es irreversible.</p>
+      <div class="modal-actions">
+        <button (click)="confirmDeleteUser()" class="btn btn-danger">Sí, Eliminar</button>
+        <button (click)="cancelDelete()" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
