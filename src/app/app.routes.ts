@@ -9,8 +9,14 @@ import { UserFormComponent } from './users/user-form/user-form.component';
 import { OrderListComponent } from './order/order-list/order-list.component'; 
 import { OrderDetailComponent } from './order/order-detail/order-detail.component'; 
 import { OrderFormComponent } from './order/order-form/order-form.component'; 
-import { InventoryListComponent } from './inventory/inventory-list/inventory-list.component'; // ¡NUEVO!
-import { InventoryFormComponent } from './inventory/inventory-form/inventory-form.component'; // ¡NUEVO!
+import { InventoryListComponent } from './inventory/inventory-list/inventory-list.component'; 
+import { InventoryFormComponent } from './inventory/inventory-form/inventory-form.component'; 
+import { ProductSearchComponent } from './products/product-search/product-search.component'; 
+import { TopSoldProductsComponent } from './reports/top-sold-products/top-sold-products.component';
+import { ActiveProductsComponent } from './reports/active-products/active-products.component'; 
+import { TopFrequentCustomerComponent } from './users/top-frequent-customers-report/top-frequent-customers-report.component'; // ¡NUEVO!
+
+
 
 
 import { AuthGuard } from './core/guards/auth.guard';
@@ -38,6 +44,11 @@ export const routes: Routes = [
   { path: 'inventories', component: InventoryListComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'inventories/new', component: InventoryFormComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'inventories/edit/:id', component: InventoryFormComponent, canActivate: [AuthGuard, AdminGuard] },
+
+  { path: 'search-products', component: ProductSearchComponent, canActivate: [AuthGuard] },
+  { path: 'top-sold', component: TopSoldProductsComponent, canActivate: [AuthGuard] },
+  { path: 'active-products', component: ActiveProductsComponent, canActivate: [AuthGuard] }, 
+  { path: 'frequent-customers', component: TopFrequentCustomerComponent, canActivate: [AuthGuard, AdminGuard] }, 
 
 
   { path: '**', redirectTo: '/home' }

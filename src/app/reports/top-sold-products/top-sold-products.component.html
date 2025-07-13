@@ -1,1 +1,27 @@
-<h2>Top 5 Sold Products Report</h2>
+<div class="top-sold-products-container">
+  <h2>Top 5 Productos Más Vendidos</h2>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando productos más vendidos...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && topSoldProducts.length === 0 && !errorMessage" class="no-data-message">
+    No hay datos de productos más vendidos.
+  </div>
+
+  <div *ngIf="topSoldProducts.length > 0" class="product-cards-grid">
+    <div *ngFor="let product of topSoldProducts; let i = index" class="product-card">
+      <div class="product-rank">#{{ i + 1 }}</div>
+      <h3>{{ product.nombre }}</h3>
+      <p><strong>Categoría:</strong> {{ product.categoria }}</p>
+      <p><strong>SKU:</strong> {{ product.sku }}</p>
+      <p><strong>Precio:</strong> ${{ product.precio | number:'1.2-2' }}</p>
+      <p><strong>Estado:</strong> {{ product.activo ? 'Activo' : 'Inactivo' }}</p>
+      
+    </div>
+  </div>
+
+  <div class="report-actions">
+    <button [routerLink]="['/home']" class="btn btn-secondary">Volver al Inicio</button>
+  </div>
+</div>

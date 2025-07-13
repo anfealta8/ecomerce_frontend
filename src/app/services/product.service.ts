@@ -55,11 +55,40 @@ export class ProductoService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Puedes añadir más métodos aquí para los reportes o búsquedas si los necesitas luego:
-  // getTop5SoldProducts(): Observable<ProductoResponse[]> {
-  //   return this.http.get<ProductoResponse[]>(`${this.apiUrl}/reportes/top5-vendidos`);
-  // }
-  // searchProductsByName(name: string): Observable<ProductoResponse[]> {
-  //   return this.http.get<ProductoResponse[]>(`${this.apiUrl}/buscar/nombre`, { params: { nombre: name } });
-  // }
+  /**
+   * Busca productos por nombre.
+   * Corresponde a GET /api/productos/buscar/nombre?nombre={nombre}
+   * @param name El nombre (o parte del nombre) a buscar.
+   * @returns Un Observable con una lista de ProductoResponse que coinciden.
+   */
+  searchProductsByName(name: string): Observable<ProductoResponse[]> {
+    return this.http.get<ProductoResponse[]>(`${this.apiUrl}/buscar/nombre?nombre=${name}`);
+  }
+
+  /**
+   * Busca productos por categoría.
+   * Corresponde a GET /api/productos/buscar/categoria?categoria={categoria}
+   * @param category La categoría a buscar.
+   * @returns Un Observable con una lista de ProductoResponse que coinciden.
+   */
+  searchProductsByCategory(category: string): Observable<ProductoResponse[]> {
+    return this.http.get<ProductoResponse[]>(`${this.apiUrl}/buscar/categoria?categoria=${category}`);
+  }
+
+  /**
+   * Obtiene el Top 5 de productos más vendidos.
+   * Corresponde a GET /api/productos/reportes/top5-vendidos
+   * @returns Un Observable con una lista de ProductoResponse (asumiendo que el backend devuelve esto).
+   */
+  getTop5SoldProducts(): Observable<ProductoResponse[]> {
+    return this.http.get<ProductoResponse[]>(`${this.apiUrl}/reportes/top5-vendidos`);
+  }
+  /**
+   * Obtiene la lista de productos activos.
+   * Corresponde a GET /api/productos/activos
+   * @returns Un Observable con una lista de ProductoResponse de productos activos.
+   */
+  getActiveProducts(): Observable<ProductoResponse[]> {
+    return this.http.get<ProductoResponse[]>(`${this.apiUrl}/activos`);
+  }
 }

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { User } from '../models/user.model'; // Asegúrate de que esta ruta sea correcta
+import { User } from '../models/user.model'; 
+import { TopFrequentCustomerResponse } from '../models/report.model';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +80,14 @@ export class UserService {
    */
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  /**
+   * Obtiene el Top 5 de clientes más frecuentes.
+   * Corresponde a GET /api/usuarios/reportes/top5-frecuentes
+   * @returns Un Observable con una lista de TopFrequentCustomerResponse.
+   */
+  getTop5FrequentCustomers(): Observable<TopFrequentCustomerResponse[]> {
+    return this.http.get<TopFrequentCustomerResponse[]>(`${this.apiUrl}/reportes/top5-frecuentes`);
   }
 }

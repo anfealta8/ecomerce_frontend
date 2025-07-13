@@ -1,1 +1,27 @@
-<h2>Active Products Report</h2>
+<div class="active-products-container">
+  <h2>Productos Activos</h2>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando productos activos...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && activeProducts.length === 0 && !errorMessage" class="no-data-message">
+    No hay productos activos para mostrar.
+  </div>
+
+  <div *ngIf="activeProducts.length > 0" class="product-cards-grid">
+    <div *ngFor="let product of activeProducts" class="product-card">
+      <h3>{{ product.nombre }}</h3>
+      <p><strong>Categoría:</strong> {{ product.categoria }}</p>
+      <p><strong>SKU:</strong> {{ product.sku }}</p>
+      <p><strong>Descripción:</strong> {{ product.descripcion }}</p>
+      <p><strong>Precio:</strong> ${{ product.precio | number:'1.2-2' }}</p>
+      <p><strong>Estado:</strong> {{ product.activo ? 'Activo' : 'Inactivo' }}</p>
+      
+    </div>
+  </div>
+
+  <div class="report-actions">
+    <button [routerLink]="['/home']" class="btn btn-secondary">Volver al Inicio</button>
+  </div>
+</div>

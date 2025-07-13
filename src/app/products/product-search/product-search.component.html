@@ -1,1 +1,43 @@
-<h2>Product Search</h2>
+<div class="product-search-container">
+  <h2>Buscar Productos</h2>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <div *ngIf="isLoading" class="loading-message">Buscando productos...</div>
+
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()" class="search-form">
+    <div class="form-group">
+      <label for="searchBy">Buscar por:</label>
+      <select id="searchBy" formControlName="searchBy" class="form-control">
+        <option *ngFor="let option of searchOptions" [value]="option">{{ option | titlecase }}</option>
+      </select>
+    </div>
+
+    <div class="form-group search-term-group">
+      <label for="searchTerm">Término de Búsqueda:</label>
+      <input id="searchTerm" type="text" formControlName="searchTerm" class="form-control" placeholder="Ej. Laptop, Electrónica">
+      <div *ngIf="f['searchTerm'].invalid && (f['searchTerm'].dirty || f['searchTerm'].touched)" class="validation-error">
+        El término de búsqueda es obligatorio.
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="searchForm.invalid || isLoading" class="btn btn-primary">Buscar</button>
+      <button type="button" (click)="searchForm.reset({ searchBy: 'nombre', searchTerm: '' })" class="btn btn-secondary">Limpiar</button>
+    </div>
+  </form>
+
+  <div *ngIf="searchResults.length > 0" class="search-results-section">
+    <h3>Resultados de la Búsqueda</h3>
+    <div class="product-cards-grid">
+      <div *ngFor="let product of searchResults" class="product-card">
+        <h3>{{ product.nombre }}</h3>
+        <p><strong>Categoría:</strong> {{ product.categoria }}</p>
+        <p><strong>SKU:</strong> {{ product.sku }}</p>
+        <p><strong>Precio:</strong> ${{ product.precio | number:'1.2-2' }}</p>
+        <p><strong>Estado:</strong> {{ product.activo ? 'Activo' : 'Inactivo' }}</p>
+        <!-- Puedes añadir más detalles o un botón para ver detalles completos -->
+      </div>
+    </div>
+  </div>
+</div>

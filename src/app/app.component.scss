@@ -1,0 +1,75 @@
+/* Estilos globales para el body y html */
+html, body {
+  height: 100%; /* Asegura que html y body ocupen el 100% del viewport */
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Fuente Inter, si no está ya definida */
+  color: #333;
+  background-color: #f4f7f6; /* Un color de fondo suave para toda la app */
+}
+
+/* Contenedor principal de la aplicación para el layout flex */
+.app-container {
+  display: flex;
+  flex-direction: column; /* Organiza los elementos verticalmente */
+  min-height: 100vh; /* Asegura que el contenedor ocupe al menos el 100% del viewport */
+}
+
+/* Contenido principal que crecerá para empujar el footer hacia abajo */
+.main-content {
+  flex-grow: 1; /* Permite que el contenido principal ocupe todo el espacio disponible */
+  padding: 20px; /* Espaciado interno para el contenido */
+}
+
+/* Estilos para los botones genéricos (puedes ajustar o mover a un archivo global si ya tienes) */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none; /* Para usar en routerLink */
+  display: inline-block; /* Para que padding y margin funcionen correctamente */
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  &:hover { background-color: #0056b3; }
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  &:hover { background-color: #5a6268; }
+}
+
+.btn-success {
+  background-color: #28a745;
+  color: white;
+  &:hover { background-color: #218838; }
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  &:hover { background-color: #c82333; }
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+  &:hover { background-color: #138496; }
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #212529;
+  &:hover { background-color: #e0a800; }
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}

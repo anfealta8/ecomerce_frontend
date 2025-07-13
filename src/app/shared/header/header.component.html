@@ -9,7 +9,7 @@
       <li><a routerLink="/search-products" routerLinkActive="active">Search Products</a></li>
       <li><a routerLink="/top-sold" routerLinkActive="active">Top Sold</a></li>
       <li><a routerLink="/active-products" routerLinkActive="active">Active Products</a></li>
-      <li><a routerLink="/frequent-customers" routerLinkActive="active">Frequent Customers</a></li>
+      <li *ngIf="authService.isAdmin()"><a routerLink="/frequent-customers" routerLinkActive="active">Frequent Customers</a></li>
 
 
       <li class="auth-links">

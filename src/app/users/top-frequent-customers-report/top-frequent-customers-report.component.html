@@ -1,1 +1,24 @@
-<h2>Top 5 Frequent Customers Report</h2>
+<div class="frequent-customers-container">
+  <h2>Top 5 Clientes Frecuentes</h2>
+
+  <div *ngIf="isLoading" class="loading-message">Cargando clientes frecuentes...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <div *ngIf="!isLoading && frequentCustomers.length === 0 && !errorMessage" class="no-data-message">
+    No hay datos de clientes frecuentes.
+  </div>
+
+  <div *ngIf="frequentCustomers.length > 0" class="customer-cards-grid">
+    <div *ngFor="let customer of frequentCustomers; let i = index" class="customer-card">
+      <div class="customer-rank">#{{ i + 1 }}</div>
+      <h3>{{ customer.customerUsername }}</h3>
+      <p><strong>ID Cliente:</strong> {{ customer.customerId }}</p>
+      <p><strong>Órdenes Totales:</strong> {{ customer.totalOrders }}</p>
+    </div>
+  </div>
+
+  <div class="report-actions">
+    <button [routerLink]="['/home']" class="btn btn-secondary">Volver al Inicio</button>
+  </div>
+</div>
